@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crear reserva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    form input { padding: .5rem; margin: .25rem 0; width: 280px; max-width: 100%; }
+    label { display:block; margin-top:.5rem; }
+    .btn { padding: .5rem .9rem; cursor: pointer; margin-top: .75rem; }
+    .meta { color:#555; margin-bottom:1rem; }
+    .errors { color:#b00; margin:.5rem 0; }
+  </style>
+</head>
+<body>
+  <h1>Nueva reserva</h1>
+
+  <div class="meta">
+    Habitación <strong>{{ room.number }}</strong> · Tipo: {{ room.get_room_type_display }} · Capacidad: {{ room.capacity }}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.room_id }}  {# hidden #}
+
+    <label>{{ form.guest_name.label }}<br/>{{ form.guest_name }}</label>
+    <label>{{ form.guests_count.label }}<br/>{{ form.guests_count }}</label>
+    <label>{{ form.check_in.label }}<br/>{{ form.check_in }}</label>
+    <label>{{ form.check_out.label }}<br/>{{ form.check_out }}</label>
+
+    {% if form.non_field_errors %}
+      <div class="errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <button class="btn" type="submit">Confirmar reserva</button>
+  </form>
+
+  <p style="margin-top:1rem;">
+    <a href="{% url 'hotel:availability' %}">← Volver a disponibilidad</a>
+  </p>
+</body>
+</html>

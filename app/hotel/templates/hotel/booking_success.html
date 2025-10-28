@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reserva confirmada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    .card { border:1px solid #ddd; padding:1rem; border-radius:.5rem; }
+  </style>
+</head>
+<body>
+  <h1>✅ Reserva confirmada</h1>
+  <div class="card">
+    <p><strong>Folio:</strong> {{ booking.id }}</p>
+    <p><strong>Habitación:</strong> {{ booking.room.number }} ({{ booking.room.get_room_type_display }})</p>
+    <p><strong>Huésped:</strong> {{ booking.guest_name }}</p>
+    <p><strong>Fechas:</strong> {{ booking.check_in }} → {{ booking.check_out }}</p>
+    <p><strong>Estatus:</strong> {{ booking.get_status_display }}</p>
+  </div>
+
+  <p style="margin-top:1rem;">
+    <a href="{% url 'hotel:availability' %}">← Hacer otra búsqueda</a>
+  </p>
+</body>
+</html>

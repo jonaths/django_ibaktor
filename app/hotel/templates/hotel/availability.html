@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Disponibilidad de habitaciones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    form input, form select { padding: .5rem; margin-right: .5rem; }
+    .btn { padding: .5rem .9rem; cursor: pointer; }
+    .room-card { border: 1px solid #ddd; padding: 1rem; border-radius: .5rem; margin: .75rem 0; }
+    .messages { margin-bottom: 1rem; color: #444; }
+    .empty { color: #777; }
+  </style>
+</head>
+<body>
+  <h1>Buscar disponibilidad</h1>
+
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div>{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.check_in.label_tag }} {{ form.check_in }}
+    {{ form.check_out.label_tag }} {{ form.check_out }}
+    {{ form.guests_count.label_tag }} {{ form.guests_count }}
+    {{ form.room_type.label_tag }} {{ form.room_type }}
+    <button class="btn" type="submit">Buscar</button>
+    {% if form.non_field_errors %}
+      <div style="color:#b00">{{ form.non_field_errors }}</div>
+    {% endif %}
+  </form>
+
+  {% if results %}
+    <h2>Resultados</h2>
+    {% if available_rooms %}
+      {% for room in available_rooms %}
+        <div class="room-card">
+          <strong>Habitación {{ room.number }}</strong><br/>
+          Tipo: {{ room.get_room_type_display }} · Capacidad: {{ room.capacity }}<br/>
+          Precio base: ${{ room.base_price }} · Estado: {{ room.get_status_display }}
+          <div style="margin-top:.5rem;">
+            <a class="btn" href="{% url 'hotel:booking_create' room.id %}">Reservar</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="empty">No hay habitaciones disponibles con esos criterios.</p>
+    {% endif %}
+  {% endif %}
+</body>
+</html>
