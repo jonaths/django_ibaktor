@@ -10,10 +10,10 @@ services:
 
     buildCommand: |
       poetry install --no-root --only main
-      python manage.py collectstatic --noinput
+      poetry run python manage.py collectstatic --noinput
 
     startCommand: |
-      python manage.py migrate && gunicorn config.wsgi:application --workers=2 --threads=4 --timeout=60 --preload
+      poetry run python manage.py migrate && poetry run gunicorn config.wsgi:application --workers=2 --threads=4 --timeout=60 --preload
 
     healthCheckPath: /
 
