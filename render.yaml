@@ -15,7 +15,6 @@ services:
       python manage.py migrate && gunicorn config.wsgi:application --workers=2 --threads=4 --timeout=60 --preload
 
     healthCheckPath: /
-    healthCheckTimeout: 100
 
     envVars:
       - key: SECRET_KEY
