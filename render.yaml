@@ -15,7 +15,7 @@ services:
     startCommand: |
       poetry run python manage.py migrate && poetry run gunicorn config.wsgi:application --workers=2 --threads=4 --timeout=60 --preload
 
-    healthCheckPath: /
+    healthCheckPath: /healthz/
 
     envVars:
       - key: SECRET_KEY

@@ -16,8 +16,11 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.http import HttpResponse
 from django.urls import path, include
+
+
+def healthz(_): return HttpResponse("ok")
 
 
 urlpatterns = [
@@ -26,4 +29,5 @@ urlpatterns = [
     # el home de la aplicacion
     # homepage → disponibilidad
     path("", include("hotel.urls", namespace="hotel")),  #
+    path("healthz/", healthz),
 ]
