@@ -6,6 +6,7 @@ services:
     env: python
     plan: free
     autoDeploy: true
+    rootDir: app
 
     buildCommand: |
       poetry install --no-root --only main
