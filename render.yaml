@@ -1,5 +1,4 @@
 # Render Blueprint - Django + Poetry + WhiteNoise
-# Guarda este archivo como render.yaml en la raíz del repo.
 
 services:
   - type: web
@@ -8,20 +7,16 @@ services:
     plan: free
     autoDeploy: true
 
-    # ====== Build ======
     buildCommand: |
       poetry install --no-root --only main
       python manage.py collectstatic --noinput
 
-    # ====== Start ======
     startCommand: |
       python manage.py migrate && gunicorn config.wsgi:application --workers=2 --threads=4 --timeout=60 --preload
 
-    # ====== Health Check (opcional) ======
     healthCheckPath: /
     healthCheckTimeout: 100
 
-    # ====== Vars comunes ======
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -29,58 +24,39 @@ services:
         value: "false"
       - key: ALLOWED_HOSTS
         value: "*.onrender.com"
-      # Ajusta con tu URL real en Render si usas CSRF
+      # Cambia esto después del primer deploy con tu URL real
       - key: CSRF_TRUSTED_ORIGINS
         value: "https://your-service-name.onrender.com"
       - key: TIME_ZONE
         value: "America/Mexico_City"
 
-      # ------------------------------
-      # Opción A: SQLite + Disk (por defecto)
-      # ------------------------------
+      # —— Postgres ——
       - key: DB_ENGINE
-        value: "sqlite"
-      - key: SQLITE_PATH
-        value: "/opt/render/project/data"
+        value: "postgres"
+      - key: DB_SSL_REQUIRE
+        value: "true"
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: django-postgres
+          property: database
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: django-postgres
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: django-postgres
+          property: password
+      - key: POSTGRES_HOST
+        fromDatabase:
+          name: django-postgres
+          property: host
+      - key: POSTGRES_PORT
+        fromDatabase:
+          name: django-postgres
+          property: port
 
-      # ------------------------------
-      # Opción B: PostgreSQL (DESCOMENTAR si usas Postgres)
-      # ------------------------------
-      # - key: DB_ENGINE
-      #   value: "postgres"
-      # - key: DB_SSL_REQUIRE
-      #   value: "true"
-      # - key: POSTGRES_DB
-      #   fromDatabase:
-      #     name: django-postgres
-      #     property: database
-      # - key: POSTGRES_USER
-      #   fromDatabase:
-      #     name: django-postgres
-      #     property: user
-      # - key: POSTGRES_PASSWORD
-      #   fromDatabase:
-      #     name: django-postgres
-      #     property: password
-      # - key: POSTGRES_HOST
-      #   fromDatabase:
-      #     name: django-postgres
-      #     property: host
-      # - key: POSTGRES_PORT
-      #   fromDatabase:
-      #     name: django-postgres
-      #     property: port
-
-    # ====== Disks (para SQLite persistente) ======
-    disks:
-      - name: data
-        mountPath: /opt/render/project/data
-        sizeGB: 1
-
-# ------------------------------
-# Opción B: Base de datos Postgres gestionada por Render
-# (DESCOMENTAR SOLO SI USAS POSTGRES Y COMENTAR EL DISK ARRIBA)
-# ------------------------------
-# databases:
-#   - name: django-postgres
-#     plan: free
+# Base de datos Postgres gestionada por Render (nivel raíz, alineado con 'services')
+databases:
+  - name: django-postgres
+    plan: free
