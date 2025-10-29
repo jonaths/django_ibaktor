@@ -14,7 +14,15 @@ SECRET_KEY = config(
 DEBUG = config("DEBUG", cast=bool, default=True)
 
 # Comas: "localhost,127.0.0.1,*.onrender.com"
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv(), default="")
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    cast=Csv(),               # lee "a,b,c" -> ["a","b","c"]
+    default="localhost,127.0.0.1"
+)
+
+# Confía en el proxy de Render para detectar HTTPS correcto
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 
 # Si usas Render, agrega: CSRF_TRUSTED_ORIGINS=https://<tu-servicio>.onrender.com
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv(), default="")
