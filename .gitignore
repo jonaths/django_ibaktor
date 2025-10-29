@@ -1,0 +1,86 @@
+# ==============================
+# Django / Python
+# ==============================
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.log
+*.pot
+*.mo
+
+# Django things
+db.sqlite3
+media/
+staticfiles/
+.env
+.env.*
+*.bak
+
+# ==============================
+# Poetry / Virtualenv
+# ==============================
+.venv/
+venv/
+poetry.lock
+poetry.toml
+
+# ==============================
+# IDEs
+# ==============================
+.idea/
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+*.iml
+misc.xml
+
+# ==============================
+# OS-generated files
+# ==============================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# ==============================
+# Build / Deployment
+# ==============================
+build/
+dist/
+*.manifest
+*.spec
+
+# Render / Docker / misc
+render-build.sh
+*.log
+*.pid
+*.seed
+*.cover
+*.coverage
+htmlcov/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.tox/
+.cache/
+
+# ==============================
+# Node / Frontend (si lo usas)
+# ==============================
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# ==============================
+# Backup / temp
+# ==============================
+*.swp
+*.swo
+*.tmp
+*.bak
+*~
